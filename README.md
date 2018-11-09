@@ -41,27 +41,33 @@ SPOTIFY_SECRET=your-spotify-secret
 ```
 5. Make a file called **random.txt.** Inside of **random.txt** put the following in with no extra characters or white space:
 
-* spotify-this-song,"I Want it That Way"
+
+* **spotify-this-song,"I Want it That Way"**
+
 
 6. Make a JavaScript file named **liri.js.**
 
-7. At the top of the liri.js file, add code to read and set any environment variables with the dotenv package:
+
+7. At the top of the **liri.js** file, add code to read and set any environment variables with the dotenv package:
 ``` javascript
 require("dotenv").config();
 ```
 
-8.Add the code required to import the **keys.js** file and store it in a variable.
+
+8. Add the code required to import the **keys.js** file and store it in a variable.
+
 ```var spotify = new Spotify(keys.spotify);```
 
-9.Make it so **liri.js** can take in one of the following commands:
 
-  -concert-this
+9. Make it so **liri.js** can take in one of the following commands:
 
-  -spotify-this-song
+  - **concert-this**
 
-  -movie-this
+  - **spotify-this-song**
 
-  -do-what-it-says
+  - **movie-this**
+
+  - **do-what-it-says**
 
 
 # Links 
