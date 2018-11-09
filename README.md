@@ -32,14 +32,36 @@ exports.spotify = {
   secret: process.env.SPOTIFY_SECRET
 };
 ```
-4.Create a file named **.env**, add the following to it, replacing the values with your API keys (no quotes) once you have them:
+4. Create a file named **.env**, add the following to it, replacing the values with your API keys (no quotes) once you have them:
   ```
   # Spotify API keys
 
 SPOTIFY_ID=your-spotify-id
 SPOTIFY_SECRET=your-spotify-secret
 ```
+5. Make a file called **random.txt.** Inside of **random.txt** put the following in with no extra characters or white space:
 
+* spotify-this-song,"I Want it That Way"
+
+6. Make a JavaScript file named **liri.js.**
+
+7. At the top of the liri.js file, add code to read and set any environment variables with the dotenv package:
+``` javascript
+require("dotenv").config();
+```
+
+8.Add the code required to import the **keys.js** file and store it in a variable.
+```var spotify = new Spotify(keys.spotify);```
+
+9.Make it so **liri.js** can take in one of the following commands:
+
+  -concert-this
+
+  -spotify-this-song
+
+  -movie-this
+
+  -do-what-it-says
 
 
 # Links 
