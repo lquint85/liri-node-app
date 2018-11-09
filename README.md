@@ -32,6 +32,14 @@ exports.spotify = {
   secret: process.env.SPOTIFY_SECRET
 };
 ```
+4.Create a file named **.env**, add the following to it, replacing the values with your API keys (no quotes) once you have them:
+  ```
+  # Spotify API keys
+
+SPOTIFY_ID=your-spotify-id
+SPOTIFY_SECRET=your-spotify-secret
+```
+
 
 
 # Links 
