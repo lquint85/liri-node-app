@@ -13,12 +13,15 @@ In this assignment, you will make LIRI. LIRI is like iPhone's SIRI. However, whi
 * Send requests to the Bands in Town, Spotify and OMDB APIs.
 * Include screenshots (or a video) of typical user flows through your application (for the customer and if relevant the manager/supervisor). This includes views of the prompts and the responses after their selection (for the different selection options).
 * Please submit the link to the Github Repository!
+
 # Instructions 1B
 1. Navigate to the root of your project and run **npm init -y** — this will initialize a **package.json** file for your project. The **package.json** file is required for installing third party npm packages and saving their version numbers. If you fail to initialize a **package.json** file, it will be troublesome, and at times almost impossible for anyone else to run your code after cloning your project.
+
 2.Make a **.gitignore** file and add the following lines to it. This will tell git not to track these files, and thus they won't be committed to Github.
-  -  node_modules
-  - .DS_Store
-  - .env
+      -  node_modules
+      - .DS_Store
+      - .env
+
 3. Make a JavaScript file named **keys.js.**
   ```javascript
   console.log('this is loaded');
