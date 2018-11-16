@@ -1,66 +1,125 @@
-//============ Loads Node Modules ===============
+//==============Initialize Requests===========================
 require("dotenv").config();
-let spotify = require("node-spotify-api");
-let fs = require("fs");
-let request = ("request");
-let keys = require("./keys.js");
+let request = require("request");
+let mykeys = require("./keys");
+let Spotify = require("node-spotify-api");
 let moment = require("moment");
+let fs = require("fs");
+let command = process.argv[2];
+let input = process.argv.slice(3).join(" ");
+// ============================================================
 
-//==== Declare variables for user input ==========
-let ask = process.argv[2];
-let input = process.argv.slice(3).join(",");
+///////////////////////////////Spotify\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+let spotifySearch = function (searchTerm) {
+    let spotify = new Spotify(mykeys.spotify);
+    console.log(mykeys.spotify);
 
-//=========== Spotify ============================
-let songSearch = function (searchTerm) {
-    let spotify = new Spotify(keys.spotify);
-    console.log(keys.spotify);
+    spotify.search({
+        type: "track",
+        query: "Kendrick Lamar",
+    }, function (err, data) {
+        if (err) {
+            return console.log("Error occurred here:" + err);
+
+        }
+
+        console.log("-------------------------------------------");
+        console.log("Artist:" + data.tracks.items[0].artists[0].name);
+        console.log("Song:" + data.tracks.items[0].name);
+        console.log("Album:" + data.tracks.items[0].album.name);
+        console.log("Preview Link:" + data.tracks.items[0].preview_url);
+        console.log("------------------------------------------");
+    });
+};
+/////////////////////////////////////////////////////////////////////////////////////
+
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\Omdb\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+let omdbSearch = function (searchTerm) {
+
+    request("http://www.omdbapi.com/?t=" + searchTerm + "&y=&plot=short&apikey=trilogy",
+        function (error, response, body) {
+            if (!error && response.statusCode === 200) {
+                // console.log(body);
+                /* Default "Mr.Nobody"
+        ===============================
 
 
-//==========  Spotify Search & Display ===========
-spotify.search({type: "track", query:searchTerm}, function(err, data) {
-    if (err) {
-        return console.log("Error occured here:" + err);
-    }
-    console.log("---------------------------------------");
-    console.log("Artist:" + data.tracks.items[0].artist[0].name);
-    console.log("Song:" + data.track.items[0].name);
-    console.log("Album:"+ data.track.items[0].album.name);
-    console.log("Preview-Link:" +data.tracks.items[0].preview_url);
-    console.log("---------------------------------------");
-});
+        ===============================
+        */
+                console.log("-----------------------------------");
+                console.log("Title:" + JSON.parse(body).Title);
+                console.log("Release Year:" + JSON.parse(body).Year);
+                console.log("IMDB Rating:" + JSON.parse(body).Ratings[0].Value);
+                console.log("Rotten Tomatoes Rating:" + JSON.parse(body).Ratings[1].Value);
+                console.log("Country" + JSON.parse(body).Country);
+                console.log("Language:" + JSON.parse(body).Language);
+                console.log("Plot:" + JSON.parse(body).Plot);
+                console.log("Actors:" + JSON.parse(body).Actors);
+                console.log("-----------------------------------");
 
+            }
+        });
+};
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-//======= Makes a descision based on command ======
-switch (input) {
-    case "conert-this":
-        concertThis();
-        break;
-    case "spotify-this-song":
-        spotifyThisSong();
-        break;
-    case "movie-this":
-        movieThis();
-        break;
-    case "do-what-it-says":
-        doWhatItSays();
-        break;
-    default:
-        console.log("I want liri bot to do the work");
-        break;
+///////////////////////////////// Bands in Town \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+let concertSearch = function (searchTerm) {
+
+    request(
+        "https://rest.bandsintown.com/artists/" + searchTerm + "/events?app_id=codingbootcamp",
+        function (error, response, body) {
+            if (!error && response.statusCode === 200) {
+                console.log(body);
+            }
+
+            //LOOP THROUGH DATA AND PULL INFO\\
+
+            for (i = 0; i < body.length; i++) {
+                console.log("-------------------------------------");
+                console.log("Venue:" + JSON.parse(body)[i].venue.name);
+                console.log("Location:" + JSON.parse(body)[i].venue.country + ", " + JSON.parse(body)[i].venue.region + ", " + JSON.parse(body)[i].venue.city);
+                console.log("Date:" + moment(JSON.parse(body)[i].datetime).format("MM/DD/YYYY"));
+                console.log("-------------------------------------");
+            }
+        }
+    );
+};
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////// Do What it says \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+let doWhatItSaysSearch = function () {
+    fs.readFile("random.txt", "utf8", function (error, data) {
+        if (error) {
+            return console.log(error);
+        }
+
+        let dataArr = data.split(",");
+        let command = dataArr[0];
+        let input = dataArr[1];
+
+        if (command === "spotify-this-song") {
+            spotifySearch(input);
+        }
+        if (command === "movie-this") {
+            omdbSearch(input);
+        }
+        if (command === "concert-this") {
+            concertSearch(input);
+        }
+
+    });
+};
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////Function Calls\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+if (command === "spotify-this-song") {
+    spotifySearch(input);
 }
-//============= Function Declarations =============
-function concertThis() {
-    console.log("CONCERT THIS" + process.argv);
+if (command === "movie-this") {
+    omdbSearch(input);
 }
-
-function spotifyThisSong() {
-    console.log("SPOTIFY THIS SONG" + process.argv);
-}
-
-function movieThis() {
-    console.log("MOVIE THIS" + process.argv);
-}
-
-function doWhatItSays() {
-    console.log("DO WHAT IT SAYS" + process.argv);
+if (command === "concert-this") {
+    concertSearch(input);
 }
