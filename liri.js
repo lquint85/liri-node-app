@@ -12,11 +12,11 @@ let input = process.argv.slice(3).join(" ");
 ///////////////////////////////Spotify\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 let spotifySearch = function (searchTerm) {
     let spotify = new Spotify(mykeys.spotify);
-    console.log(mykeys.spotify);
+
 
     spotify.search({
         type: "track",
-        query: "Kendrick Lamar",
+        query: searchTerm,
     }, function (err, data) {
         if (err) {
             return console.log("Error occurred here:" + err);
@@ -25,6 +25,7 @@ let spotifySearch = function (searchTerm) {
 
         console.log("-------------------------------------------");
         console.log("Artist:" + data.tracks.items[0].artists[0].name);
+
         console.log("Song:" + data.tracks.items[0].name);
         console.log("Album:" + data.tracks.items[0].album.name);
         console.log("Preview Link:" + data.tracks.items[0].preview_url);
@@ -36,16 +37,18 @@ let spotifySearch = function (searchTerm) {
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\Omdb\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 let omdbSearch = function (searchTerm) {
 
+    // console.log(body);
+    //Default "Mr.Nobody"//
+
+
+    if (!searchTerm) {
+        searchTerm = "Mr. Nobody";
+    }
+
     request("http://www.omdbapi.com/?t=" + searchTerm + "&y=&plot=short&apikey=trilogy",
         function (error, response, body) {
             if (!error && response.statusCode === 200) {
-                // console.log(body);
-                /* Default "Mr.Nobody"
-        ===============================
 
-
-        ===============================
-        */
                 console.log("-----------------------------------");
                 console.log("Title:" + JSON.parse(body).Title);
                 console.log("Release Year:" + JSON.parse(body).Year);
@@ -74,12 +77,15 @@ let concertSearch = function (searchTerm) {
             }
 
             //LOOP THROUGH DATA AND PULL INFO\\
+            console.log(body);
+
+            body = JSON.parse(body);
 
             for (i = 0; i < body.length; i++) {
                 console.log("-------------------------------------");
-                console.log("Venue:" + JSON.parse(body)[i].venue.name);
-                console.log("Location:" + JSON.parse(body)[i].venue.country + ", " + JSON.parse(body)[i].venue.region + ", " + JSON.parse(body)[i].venue.city);
-                console.log("Date:" + moment(JSON.parse(body)[i].datetime).format("MM/DD/YYYY"));
+                console.log("Venue:" + (body)[i].venue.name);
+                console.log("Location:" + (body)[i].venue.country + ", " + (body)[i].venue.region + ", " + (body)[i].venue.city);
+                console.log("Date:" + moment(body[i].datetime).format("MM/DD/YYYY"));
                 console.log("-------------------------------------");
             }
         }
