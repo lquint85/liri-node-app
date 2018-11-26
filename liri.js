@@ -129,3 +129,5 @@ if (command === "movie-this") {
 if (command === "concert-this") {
     concertSearch(input);
 }
+if (command === "do-what-it-says")
+doWhatItSaysSearch(input);
