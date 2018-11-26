@@ -75,3 +75,15 @@ var spotify = new Spotify(keys.spotify);
 # Links 
 Check out the link below for the Repository files.
 (https://github.com/lquint85/liri-node-app)
+
+# Examples/Screenshots
+
+![](images/concer-this-input.png)
+![](images/concert-this-ouput.png)
+![](images/do-what-it-says%20input.png)
+![](images/do-what-it-says-output.png)
+![](images/movie-this-input.png)
+![](images/movie-this-output.png)
+![](images/spotify-this-song-input.png)
+![](images/spotify-this-song-ouput.png)
+
